@@ -63,10 +63,10 @@ stable <- desc_statby(dataCol, measure.var = "concentration", grps = "pollutant"
 stable <- stable[, c("pollutant", "mean", "sd", "median", "min", "max")]
 
 stable.p <- ggtexttable(stable, rows = NULL, theme = ttheme("light"))
-stable.p %>%
+c <- stable.p %>%
   tab_add_hline(at.row = c(1, 2), row.side = "top", linewidth = 3, linetype = 1) %>%
   tab_add_hline(at.row = c(4), row.side = "bottom", linewidth = 3, linetype = 1)
-c <- stable.p
+
 ### -----------------------------------------------------------------------------
 
 
@@ -87,11 +87,10 @@ title8hr <- "Min and max 8hr mean concentrations"
 stable8hr <- desc_statby(data8hrCol, measure.var = "meanConc_8hr", grps = "pollutant")
 stable8hr <- stable8hr[, c("pollutant", "min", "max")]
 stable8hr.p <- ggtexttable(stable8hr, rows = NULL, theme = ttheme("light"))
-stable8hr.p %>%
+d <- stable8hr.p %>%
   tab_add_hline(at.row = c(1, 2), row.side = "top", linewidth = 3, linetype = 1) %>%
   tab_add_hline(at.row = c(4), row.side = "bottom", linewidth = 3, linetype = 1)
 
-d <- stable8hr.p
 ### -----------------------------------------------------------------------------
 
 
