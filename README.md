@@ -58,3 +58,6 @@ There are four R scripts:
   - *cleanUpECCC* basically transforms the matric layout of ECCC data into 'long'/columnar data. It also converts dates/times to yyyy/mm/dd hh:mm Excel compatible formats. 
 - **AnswerKey.Rmd** is the markdown file used to generate the answer keys. 
   
+### Notes
+
+The weather stuff relates to a previous version of the lab. The code and data are kept here but aren't used in the latest version. 
