@@ -17,7 +17,7 @@ folder <- 'Toronto_60410_2018/'
 city <- 'Toronto'
 
 
-#2. cleanUpECCC: function that converts ECCC files into column w/ Excel Dates ---------------------
+# 2. cleanUpECCC: function that converts ECCC files into column w/ Excel Dates ---------------------
 cleanUpECCC <- function(file,NAPSID){
   
   # Removing the blurb at the top of the ECCC .csv's that expain '-999' values
@@ -45,4 +45,31 @@ cleanUpECCC <- function(file,NAPSID){
 }
 
 
-x <- cleanUpECCC(O3, NAPSID)
+#3. studentData: combines O3 & NO2 data and creates a lst of 7 day overlapping datasets -----------
+#     Default station is Downtown Toronto 60433
+#     nsplits is the number of subsets, default is 364
+#     overlap is number of days datasets overlap, default is 144 hrs or 6 days
+
+
+studentData <- function(O3, NO2, NAPSID = 60433 , nsplit=364,overlap=144){
+  
+  O3 <- cleanUpECCC(file = O3, NAPSID = NAPSID)
+  NO2 <- cleanUpECCC(file = NO2, NAPSID = NAPSID)
+  
+  merge_df <- merge(NO2, O3, by="Date")
+  keep <- c("Date", "NO2", "O3")
+  df <- merge_df[keep]
+
+  
+  nrows <- NROW(df)
+  nperdf <- ceiling( (nrows + overlap*nsplit) / (nsplit+1) )
+  start <- seq(1, nsplit*(nperdf-overlap)+1, by= nperdf-overlap )
+
+  if( start[nsplit+1] + nperdf != nrows )
+    warning("Returning an incomplete dataframe.")
+
+  lapply(start, function(i) df[c(i:(i+nperdf-1)),])
+}
+
+lst <- studentData(O3, NO2, NAPSID)
+
