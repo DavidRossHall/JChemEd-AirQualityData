@@ -1,11 +1,11 @@
 ### Genrating master PDF with answer keys to every CHM135 .csv dataset. 
 
-library(staplr)
+library(stapler)
 
-setwd(paste0(getwd(),"/UploadedToQuercus", sep=""))
+setwd(paste0(getwd(),"/UploadedToQuercus_Fall2020", sep=""))
 
-filelist <- list.files(pattern = "\\.csv$")
-
+#filelist <- list.files(pattern = "\\.csv$")
+filelist <- "Toronto_60410_2018_Day206to212.csv"
 for (file in filelist) {
 
 

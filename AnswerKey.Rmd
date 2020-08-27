@@ -5,8 +5,9 @@ output:
 params:
   
   file: x
+  title: y
 #title : "Test" 
-title: "`r params$file`"
+title: "`r  params$title`"
 header-includes:
   - \usepackage{float}
 ---
@@ -22,8 +23,10 @@ library(kableExtra)
 
 data <- read.csv(file, header = TRUE)
 
-#file <- read.csv("Toronto_60410_2018/Toronto_60410_2018_Day10to16.csv", header = TRUE)
+#data <- read.csv("Toronto_60410_2018/Toronto_60410_2018_Day10to16.csv", header = TRUE)
 ```
+
+
 ```{r, echo = FALSE}
 #data <- read.csv(params$file, header = TRUE)
 
@@ -45,9 +48,9 @@ dataCol <- data %>%
 ```
 
 
-The results below are what the student results should look like for the `r params$file` dataset used in CHM 135 Experiment 1.
+The results below are what the student results should look like for the `r  params$title` dataset used in CHM 135 Experiment 1.
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE, error = FALSE, fig.height = 1.25, fig.cap= "Time series of pollutant concentration. There shouldn't be a linear regression on this plot, if students have done so please note it."}
+```{r, echo = FALSE, warning = FALSE, message = FALSE, error = FALSE, fig.height = 3.5, fig.cap= "(A) Time series of pollutant concentration. There shouldn't be a linear regression on this plot, if students have done so please note it. (B) Correlation plot of O3 vs. NO2; the equation of the line is displayed in the lower left corner. "}
 
 
 ### Time series plot of NO2, O3, and OX ------------------------------------------
@@ -59,12 +62,6 @@ a <- ggplot(data = dataCol, aes(x = time, y = concentration, color = pollutant))
   ylab(bquote('Conc., ppb')) +
   xlab(bquote('Time')) 
 ### -----------------------------------------------------------------------------
-
-a
-
-```
-
-```{r, echo = FALSE, warning = FALSE, message = FALSE, error = FALSE, fig.cap= "Correlation plot of O3 vs. NO2; the equation of the line is displayed in the lower left corner.", fig.height = 2, fig.width=4}
 
 formula <- y ~ x ### Need to keep this so LM regression appears on plot
 
@@ -81,7 +78,10 @@ b <- ggplot(data = data, aes(x = NO2, y = O3)) +
   stat_poly_eq(aes(label =  paste(stat(eq.label), stat(rr.label), sep = "*\", \"*")),
                formula = formula, rr.digits = 4 , parse = TRUE, label.y = 0.05, size = 3)
 
-b
+#b
+
+ggarrange(a,b, nrow = 2, labels = c("A","B"))
+
 ```
 
 
