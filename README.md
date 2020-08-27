@@ -1,7 +1,7 @@
 # CHM135 Experiment 1: *The Chemistry of Air Quality* Source Code
 by: David Hall, davidross.hall@mail.utoronto.ca
 
-Due to Covid-19, the tradional laboratory component of the first year CHM 135 course had to shift to virtual experiments. Experiment 1 utilises real hourly measurements of atmospheric pollutants (O<sub>3</sub> and NO<sub>3</sub>) to teach students the basics of data analysis, plotting and Microsoft Excel while they explore concepts related to atmospheric pollution. How to run the code is described below. 
+Due to Covid-19, the tradional laboratory component of the first year CHM 135 course had to shift to virtual experiments. Experiment 1 utilises real hourly measurements of atmospheric pollutants (O<sub>3</sub> and NO<sub>3</sub>) to teach students the basics of data analysis, plotting and Microsoft Excel while they explore concepts related to atmospheric pollution. How to generate your own datasets and answer keys is shown below. 
 
 ## What it does
 
@@ -20,15 +20,15 @@ The entirety of the data subsetting is done in R and the answer reports are writ
 
 ## Data sources
 
-All of the hourly atmospheric pollutant measurements are taken from the [ECCC NAPS Data repository](http://data.ec.gc.ca/data/air/monitor/national-air-pollution-surveillance-naps-program/Data-Donnees/?lang=en). There is O<sub>3</sub> and NO<sub>3</sub> hourly (dubbed 'continuous' by ECCC) going back to 1975. You can download whichever .csv file you want. For example [here's a link](http://data.ec.gc.ca/data/air/monitor/national-air-pollution-surveillance-naps-program/Data-Donnees/2018/ContinuousData-DonneesContinu/HourlyData-DonneesHoraires/?lang=en) to the ECCC O<sub>3</sub> and NO<sub>3</sub> data included in this repo.
+All of the hourly atmospheric pollutant measurements are taken from the [ECCC NAPS Data repository](http://data.ec.gc.ca/data/air/monitor/national-air-pollution-surveillance-naps-program/Data-Donnees/?lang=en). There is O<sub>3</sub> and NO<sub>3</sub> hourly data (dubbed 'continuous' by ECCC) going back to 1975. You can download whichever .csv file you want. For example [here's a link](http://data.ec.gc.ca/data/air/monitor/national-air-pollution-surveillance-naps-program/Data-Donnees/2018/ContinuousData-DonneesContinu/HourlyData-DonneesHoraires/?lang=en) to the ECCC O<sub>3</sub> and NO<sub>3</sub> data included in this repo.
 
-You'll notice the original ECCC data is arranged in a matrix, wherein hourly data stored across a row, and each row is a day. This is a pain to work with in Excel, so the data is transformed into 'long' format, each row is an hour, for the students. 
+You'll notice the original ECCC data is arranged in a matrix, wherein hourly data stored across a row, and each row is a day. This is a pain to work with in Excel, so the data is transformed into 'long' format, i.e. each row is an hourly measurement, for the students. 
 
-## Generating your own datasets and answer keys
+## Description of Files
 
-I made use of relative referencing for this code, as a result you can simply download (or fork) this entire repo and run it on your own computer. As long as the ECCC data of your choice is in the parent directory (alongside the code  files, more below) you should be fine. 
+I made use of relative referencing for this code, as a result you can simply download (or fork) this entire repo and run it on your own computer. As long as the ECCC data of your choice is in the parent directory (alongside the code files, more below) you should be fine. 
 
-There are four R scriptsm:
+There are four R scripts:
 
 - **CHM135_Exp1Data.Rproj**: the RStudio project, open everything in this to use the relative referencing stuff. 
 - **AutoAnswerReports.R** is the main script which you will run to generate the subset .csv files for students and the answer keys for the TAs. 
@@ -50,7 +50,7 @@ There are four R scriptsm:
       - the NAPS station ID
       - the number of data pairs (winter & summer, the default is 15) 
       - whether you want to save the data as .csvs (default is TRUE)
-4. As long as everything is setup, you can just run this entire script and **in a new directory** specific to the NAPS station and ECCC data year you'll get the following outputs:
+4. As long as everything is setup, you can just run this entire script and **in a new directory** specific to the NAPS station and ECCC data year you specified, you'll get the following outputs:
   -  containing the number of .csv subset files you requested
   - a PDF answer report for each data frame. 
   
