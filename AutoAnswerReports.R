@@ -1,7 +1,7 @@
 ### 2020-08-27, David Hall, davidross.hall@mail.utoronto.ca
 
 # This script generates .csv subsets of ECCC O3 and NO2 hourly data.
-# An anwser key for each .csv is also generated for the CHM 135 Experiment 1. 
+# An answer key for each .csv is also generated for the CHM 135 Experiment 1. 
 
 
 # 1. Loading library and functions ---------------------------------
@@ -10,7 +10,7 @@ library(stringr)
 library(anytime)
 source("dataSubsets.R") # needs to be in the same directory
 
-# 2. Parameters used for the generation of student datasets & anwser keys ---------------
+# 2. Parameters used for the generation of student datasets & answer keys ---------------
 
 O3 <- "O3_2018.csv"   # ECCC hourly O3 file
 NO2 <- "NO2_2018.csv" # ECCC hourly NO2 report
@@ -30,7 +30,7 @@ lst <- studentData(O3 = O3,
 
 
 
-# 4. Generating anwser keys for saved datasets.
+# 4. Generating answer keys for saved datasets.
 
   folder <- folderLocation(O3,NAPSID)
   #setwd(paste0(getwd(),"/",folder, sep=""))

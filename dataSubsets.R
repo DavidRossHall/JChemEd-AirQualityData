@@ -1,5 +1,5 @@
 ### 2020-08-27, David Hall, davidross.hall@mail.utoronto.ca
-### Takes a single ECCC .csv file, and transforms the NAPS station data it into Excel compatibale columnar data & serial Date
+# Functions used in AutoAnswerReports.r file
 
 # 1. Loading packages ----------------
 
