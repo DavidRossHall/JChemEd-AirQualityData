@@ -14,7 +14,7 @@ source("dataSubsets.R") # needs to be in the same directory
 
 O3 <- "O3_2018.csv"   # ECCC hourly O3 file
 NO2 <- "NO2_2018.csv" # ECCC hourly NO2 report
-NAPSID <- 60433       # ECCC NAPSID, i.e. location you want data from.
+NAPSID <- 60435       # ECCC NAPSID, i.e. location you want data from.
 dataPairs <- 15       # number of paired winter/summer datasets.
 save <- TRUE          # TRUE = save files in new directory, FALSE = output list of student data subsets dfs
 
