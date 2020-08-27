@@ -8,11 +8,11 @@ library(stringr)
 library(anytime)
 
 
-O3 <- "O3_2018.csv" # ECCC hourly O3 file
-NO2 <- "NO2_2018.csv" # ECCC hourly NO2 report
-NAPSID <- 60410 # ECCC NAPSID, i.e. location you want data from.
-dataPairs <- 15 # number of paired winter/summer datasets.
-save <- TRUE # TRUE = save files in new directory, FALSE = output list of student data subsets dfs
+# O3 <- "O3_2018.csv" # ECCC hourly O3 file
+# NO2 <- "NO2_2018.csv" # ECCC hourly NO2 report
+# NAPSID <- 60410 # ECCC NAPSID, i.e. location you want data from.
+# dataPairs <- 15 # number of paired winter/summer datasets.
+# save <- TRUE # TRUE = save files in new directory, FALSE = output list of student data subsets dfs
 
 # 2. cleanUpECCC: function that converts ECCC files into column w/ Excel Dates ---------------------
 cleanUpECCC <- function(file,NAPSID){
@@ -41,11 +41,27 @@ cleanUpECCC <- function(file,NAPSID){
   return(df)
 }
 
+# 3. Outputs location of folder used to save .csv and anwser keys  ---------------------------------------------------------
 
-#3. studentData: combines O3 & NO2 data and creates a lst of 7 day overlapping datasets -----------
-#     Default station is Downtown Toronto 60433
-#     nsplits is the number of subsets, default is 364
-#     overlap is number of days datasets overlap, default is 144 hrs or 6 days
+folderLocation <- function(O3, NAPSID = 60433){
+
+    O3 <- cleanUpECCC(file = O3, NAPSID = NAPSID)
+    
+    
+    # # extracting values for saving .csvs
+    city <- O3$City[[1]]
+    date <-as.Date(O3$Date[[1]], origin = "1899-12-30")
+    year <- as.numeric(format(date,'%Y'))
+    
+    # creating directory for saving .csvs
+    folder <- paste(city,"_",NAPSID,"_",year,"/", sep = "")
+    folder
+    }
+
+# 4. studentData: combines O3 & NO2 data and creates a lst of 7 day overlapping datasets -----------
+  #     Default station is Downtown Toronto 60433
+  #     nsplits is the number of subsets, default is 364
+  #     overlap is number of days datasets overlap, default is 144 hrs or 6 days
 
 
 studentData <- function(O3, NO2, NAPSID = 60433, dataPairs = 15, save = TRUE, nsplit=364,overlap=144){
@@ -97,8 +113,19 @@ studentData <- function(O3, NO2, NAPSID = 60433, dataPairs = 15, save = TRUE, ns
   
 }
 
-lst <- studentData(O3 = O3,
-                   NO2 = NO2, 
-                   NAPSID = NAPSID,
-                   dataPairs = dataPairs,
-                   save = save)
+
+
+# 5. Inputs used to test functions. -------------------------
+
+# O3 <- "O3_2018.csv" # ECCC hourly O3 file
+# NO2 <- "NO2_2018.csv" # ECCC hourly NO2 report
+# NAPSID <- 60410 # ECCC NAPSID, i.e. location you want data from.
+# dataPairs <- 15 # number of paired winter/summer datasets.
+# save <- TRUE # TRUE = save files in new directory, FALSE = output list of student data subsets dfs
+# 
+# 
+# lst <- studentData(O3 = O3,
+#                    NO2 = NO2, 
+#                    NAPSID = NAPSID,
+#                    dataPairs = dataPairs,
+#                    save = save)
