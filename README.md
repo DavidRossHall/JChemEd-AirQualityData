@@ -24,21 +24,7 @@ All of the hourly atmospheric pollutant measurements are taken from the [ECCC NA
 
 You'll notice the original ECCC data is arranged in a matrix, wherein hourly data stored across a row, and each row is a day. This is a pain to work with in Excel, so the data is transformed into 'long' format, i.e. each row is an hourly measurement, for the students. 
 
-## Description of Files
-
-I made use of relative referencing for this code, as a result you can simply download (or fork) this entire repo and run it on your own computer. As long as the ECCC data of your choice is in the parent directory (alongside the code files, more below) you should be fine. 
-
-There are four R scripts:
-
-- **CHM135_Exp1Data.Rproj**: the RStudio project, open everything in this to use the relative referencing stuff. 
-- **AutoAnswerReports.R** is the main script which you will run to generate the subset .csv files for students and the answer keys for the TAs. 
-  - At the top of the script is where you'll specify the details needed to generate reports. These include which O<sub>3</sub> and NO<sub>2</sub> files you're using, the NAPS station ID, the number of data pairs (winter & summer, default is 15) and whether you want to save the data as .csvs (default is TRUE).
-  - You just need to run the entirety of this script to get your .csv and reports. 
-- **dataSubsets.R** contains several functions used to generate the student datasets. 
-  - *cleanUpECCC* basically transforms the matric layout of ECCC data into 'long'/columnar data. It also converts dates/times to yyyy/mm/dd hh:mm Excel compatible formats. 
-- **AnswerKey.Rmd** is the markdown file used to generate the answer keys. 
-  
- ### To generate your own datasets
+## To generate your own datasets
  
  1. Download/fork/copy this entire repo to your personal computer 
   - forking it with Git in RStudio is probably the easiest option
@@ -57,3 +43,18 @@ There are four R scripts:
 ## Merging answer keys for TAs
   
 You can potentially generate 364 ind. .csv files, which means 364 ind. pdf files. While each undergrad gets one .csv, your TAs will not want to sift through this many PDFs. R isn't setup that well to merge PDFs, so **if you want to merge the PDFs and generate a TOC check out [PDFSam](https://pdfsam.org/)**. It's free and a pretty painless way to merge all the answer PDFs into a one. 
+
+## Description of Files
+
+I made use of relative referencing for this code, as a result you can simply download (or fork) this entire repo and run it on your own computer. As long as the ECCC data of your choice is in the parent directory (alongside the code files, more below) you should be fine. 
+
+There are four R scripts:
+
+- **CHM135_Exp1Data.Rproj**: the RStudio project, open everything in this to use the relative referencing stuff. 
+- **AutoAnswerReports.R** is the main script which you will run to generate the subset .csv files for students and the answer keys for the TAs. 
+  - At the top of the script is where you'll specify the details needed to generate reports. These include which O<sub>3</sub> and NO<sub>2</sub> files you're using, the NAPS station ID, the number of data pairs (winter & summer, default is 15) and whether you want to save the data as .csvs (default is TRUE).
+  - You just need to run the entirety of this script to get your .csv and reports. 
+- **dataSubsets.R** contains several functions used to generate the student datasets. 
+  - *cleanUpECCC* basically transforms the matric layout of ECCC data into 'long'/columnar data. It also converts dates/times to yyyy/mm/dd hh:mm Excel compatible formats. 
+- **AnswerKey.Rmd** is the markdown file used to generate the answer keys. 
+  
