@@ -1,0 +1,51 @@
+
+
+
+# 1. Loading library and functions ---------------------------------
+library(tidyverse)
+library(stringr)
+library(anytime)
+source("dataSubsets.R") # needs to be in the same directory
+
+# 2. Papameters used for the generation of student datasets & anwser keys ---------------
+
+O3 <- "O3_2018.csv"   # ECCC hourly O3 file
+NO2 <- "NO2_2018.csv" # ECCC hourly NO2 report
+NAPSID <- 60433       # ECCC NAPSID, i.e. location you want data from.
+dataPairs <- 15       # number of paired winter/summer datasets.
+save <- TRUE          # TRUE = save files in new directory, FALSE = output list of student data subsets dfs
+
+
+
+
+# 3. Generating datasets, if save == TRUE, saves datasets as .csv in new folder ---------------
+lst <- studentData(O3 = O3,
+                   NO2 = NO2, 
+                   NAPSID = NAPSID,
+                   dataPairs = dataPairs,
+                   save = save)
+
+
+
+# 4. Generating anwser keys for saved datasets.
+
+  folder <- folderLocation(O3,NAPSID)
+  #setwd(paste0(getwd(),"/",folder, sep=""))
+  filelist <- list.files(path = folder, pattern = "\\.csv$", full.names = TRUE)
+
+  
+  for (file in filelist) {
+    
+    
+    
+    ### Markdown file needs to be in the same directory as the Uplaoded CHM135 .csv files.
+    rmarkdown::render(input = "AnswerKey.Rmd",
+                      output_file = paste0(gsub(".csv","", file), ".pdf"),
+                      params = list(file = file,
+                                    title = sub(".*/", "", file))
+    )
+  }
+
+# 5. To merge PDF use an external application such as PDFSam
+    # download here: https://pdfsam.org/
+  
