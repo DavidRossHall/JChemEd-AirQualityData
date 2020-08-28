@@ -37,8 +37,8 @@ You'll notice the original ECCC data is arranged in a matrix, wherein hourly dat
       - the number of data pairs (winter & summer, the default is 15) 
       - whether you want to save the data as .csvs (default is TRUE)
 4. As long as everything is setup, you can just run this entire script and **in a new directory** specific to the NAPS station and ECCC data year you specified, you'll get the following outputs:
-  -  containing the number of .csv subset files you requested
-  - a PDF answer report for each data frame. 
+   - containing the number of .csv subset files you requested
+   - a PDF answer report for each data frame. 
   
 ## Merging answer keys for TAs
   
