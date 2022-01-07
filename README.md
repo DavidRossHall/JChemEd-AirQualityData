@@ -28,14 +28,14 @@ You'll notice the original ECCC data is arranged in a matrix, wherein hourly dat
  
  1. Download/fork/copy this entire repo to your personal computer 
   - forking it with Git in RStudio is probably the easiest option
- 2. Open the *CHM135_Exp1Data.Rproj* in RStudio then open the *AutoAnswerReports.R* file.
+ 2. Open the *AirQualityData.Rproj* in RStudio then open the *AutoAnswerReports.R* file.
  3. Once opened, change the parameters to suit your needs.
     - At the top of the script is where you'll pass the details needed to generate reports to the listed variables. 
     - Options include:
       - which O<sub>3</sub> and NO<sub>2</sub> files you're using 
       - the NAPS station ID
       - the number of data pairs (winter & summer, the default is 15) 
-      - whether you want to save the data as .csvs (default is TRUE)
+      - whether you want to save the indivudal subsets as `.csv` files (default is TRUE)
 4. As long as everything is setup, you can just run this entire script and **in a new directory** specific to the NAPS station and ECCC data year you specified, you'll get the following outputs:
    - containing the number of .csv subset files you requested
    - a PDF answer report for each data frame. 
@@ -46,7 +46,7 @@ You can potentially generate 364 ind. .csv files, which means 364 ind. pdf files
 
 ## Description of Files
 
-I made use of relative referencing for this code, as a result you can simply download (or fork) this entire repo and run it on your own computer. As long as the ECCC data of your choice is in the parent directory (alongside the code files, more below) you should be fine. 
+I made use of relative referencing for this code, as a result you can simply download (or fork) this entire repo and run it on your own computer. As long as the ECCC data of your choice is in the `raw-data` folder you should be fine. Between 2019 and 2019, ECCC changed the `P/T//P/T` columns for Provinces and Territories, to `Provinces/Territories//Provinces/Territoir`, this is accounted for and renames columns as `Provinces`.
 
 There are four R scripts:
 
@@ -57,7 +57,4 @@ There are four R scripts:
 - **dataSubsets.R** contains several functions used to generate the student datasets. 
   - *cleanUpECCC* basically transforms the matric layout of ECCC data into 'long'/columnar data. It also converts dates/times to yyyy/mm/dd hh:mm Excel compatible formats. 
 - **AnswerKey.Rmd** is the markdown file used to generate the answer keys. 
-  
-### Notes
-
-The weather stuff relates to a previous version of the lab. The code and data are kept here but aren't used in the latest version. 
+ 
