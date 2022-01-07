@@ -105,9 +105,28 @@ df
 }
 
 
-# 
+# 3. Folder location ------------
 
+folderLocation <- function(x){
+  
+  city <- x$City[[1]]
+  NAPS <- x$NAPS[[1]]
+  
+  if(is.numeric(x$Time)){
+    # if dates stored as Excel timestamp (i.e. numeric)
+    date <- as.Date(x$Time[[1]], origin = "1899-12-30")
+    year <- as.numeric(format(date,"%Y"))
+  } else {
+    # getting year if POSIX
+    year <- format(x$Time[[1]], format = "%Y")
+  }
+  # creating directory for saving .csvs
+  folder <- paste(city,"_",NAPS,"_", year, "/", sep = "")
+  folder
+  
+}
 
+folderLocation(dfPOSIX)
 
 
 
