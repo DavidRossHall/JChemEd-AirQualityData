@@ -44,7 +44,9 @@ readECCC <- function(file){
 
 # 2. Combine ECCC for NAPS
 
-
+  ## Combining data frames via inner_join, so pollutants from both stations
+  ## Option of converting datetime to Excel or POSIX timestamps
+  ## ? possible for loop over list of files. clean first file, and join all others via loop? 
 
 O3 <- readECCC(file = O3_2018)
 
@@ -52,15 +54,58 @@ NO2 <- readECCC(file = NO2_2018)
 
 SO2 <- readECCC(file = SO2_2018)
 
-dat <- NO2 %>%
-  inner_join(O3) %>%
-  pivot_longer(cols = starts_with("H"),
-               names_to = c("Hour", "Pollutant"),
-               names_sep = "_",
-               values_to = "Concentration")
+joinECCC <- function(O3, NO2, NAPSID = 60435, excelTimestamp = TRUE){
+  
+  # Cleaning eccc files
+  O3 <- readECCC(O3)
+  NO2 <- readECCC(NO2)
+  
+  # Subsetted joined dataset
+  df <- O3 %>%
+    inner_join(NO2) %>%
+    filter(NAPS == as.numeric(NAPSID)) %>%
+    pivot_longer(cols = starts_with("H"),
+                 names_to = c("Hour", "Pollutant"),
+                 names_prefix = "H",
+                 names_sep = "_", 
+                 values_to = "Concentration") %>%
+    pivot_wider(names_from = Pollutant, 
+                values_from = Concentration) 
+  
+  # Creating data.time POSIXct column 
+  
+  if(excelTimestamp == TRUE){
+    
+    # Create Time column with Excel timestamp
+    # note base on 1900 origin, some versions of excel use 1904, cause if off by 4yrs in Excel
+    df <- df %>%
+      mutate(Hour = (as.numeric(Hour) -1)/24) %>%
+      mutate(Date = as.numeric(lubridate::ymd(Date) - lubridate::as_date("1899-12-30"))) %>%
+      mutate(Time = Date + Hour) %>%
+      relocate(Time, .after = Longitude) %>%
+      select(-c(Date, Hour))
+    
+    df
+    
+  } else{
+  
+  # Create Time column with POSIC timestamp.      
+  df <- df %>%
+    mutate(Time = paste0(Date, " ", Hour, ":00")) %>%
+    mutate(Time = lubridate::parse_date_time(Time, "%Y-%m-%d %H:%M") - lubridate::hours(1)) %>%
+    relocate(Time, .after = Longitude) %>%
+    select(-c(Date, Hour))
+  
+  df
+    
+  }
 
-df5 <- df4 %>%
-  pivot_longer(cols = starts_with("H"))
+df
+
+}
+
+
+# 
 
 
 
