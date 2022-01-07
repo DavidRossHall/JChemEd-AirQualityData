@@ -1,21 +1,17 @@
+### 2021-01-07 --- David Hall --- davidross.hall@mail.utoronto.ca
+
+# This scripts contains multiple functions used in AutoAnswerReports.r
+
+# 0. Loading required packages ----
+
 library(tidyverse)
 
 
-O3_2018 <- "raw-data/O3_2018.csv"
-O3_2019 <- "raw-data/O3_2019.csv"
+# 1. import ECCC files ----
 
-NO2_2018 <- "raw-data/NO2_2018.csv"
-SO2_2018 <- "raw-data/SO2_2018.csv"
+# Reads hourly ECCC NAPS .csv file. 
+# Skips premable, and cleans up column names (removing blingual part, P vs. Province, etc.)
 
-x <- read_csv(O3_2018, 
-              skip = 7, 
-              locale = readr::locale(encoding = "Latin1"),
-              name_repair = "universal")
-
-
-
-# 1. Imports hourly ECCC measurements, skips preamble, and cleans headers --------------------
-# by removing bilingual part, and renaming province columns as "Province" 
 readECCC <- function(file){
   
   # Reading ECCC hourly data and cleaning up headers
@@ -42,12 +38,11 @@ readECCC <- function(file){
 }
 
 
-# 2. Combine ECCC for NAPS
+# 2. Combine ECCC for NAPS ----
 
-  ## Combining data frames via inner_join, so pollutants from both stations
+  ## Combining O3 and NO2 via inner_join, so pollutants from both stations
   ## Option of converting datetime to Excel or POSIX timestamps
-  ## ? possible for loop over list of files. clean first file, and join all others via loop? 
-
+  ## Can work with any two hourly datasets, may expand in future any # hourly sets
 
 joinECCC <- function(O3, NO2, NAPSID = 60435, excelTimestamp = TRUE){
   
@@ -100,18 +95,19 @@ df
 }
 
 
-# 3. Extracts strings specific to joinECCC subset ------------
+# 3. Extracts strings specific to joinECCC subset ----
 
-# Creates new folder location from joinECCC formatted data subset
+# helper functions to extract specific values from joinECCC data
+# used as metadata for folder/file names in studentData
 
-## 3.1 subset city ------------
+## 3.1 subset city ----
 subsetCity <- function(x){
   
   city <- x$City[[1]]
   city
 }
 
-## 3.2 subset NAPS ------------
+## 3.2 subset NAPS ----
 
 subsetNAPS <- function(x){
   
@@ -120,7 +116,7 @@ subsetNAPS <- function(x){
   
 }
 
-## 3.3 subset year ------------
+## 3.3 subset year ----
 
 subsetYear <- function(x){
   
@@ -137,7 +133,7 @@ year
   
 }
 
-# 3.4 Subset Day of Year; get's day of year of first line in subset 
+## 3.4 Subset Day of Year; get's day of year of first line in subset  ----
 subsetDOY <- function(x){
   
   if(is.numeric(x$Time)){
@@ -153,7 +149,7 @@ subsetDOY <- function(x){
   doy
 }
 
-# 3.5 subsetProv 
+## 3.5 subsetProv  ----
 
 subsetProv <- function(x){
   
@@ -162,25 +158,45 @@ subsetProv <- function(x){
   
 }
 
-# student data ---------------------
+# 3.6 Folder Location ----
 
-studentData <- function(joinedECCC,dataPairs = 15, save = TRUE, nsplit = 364, overlap=144){
+folderLocation <- function(x){
+  city <- subsetCity(x)
+  Prov <- subsetProv(x)
+  year <- subsetYear(x)
+  NAPS <- subsetNAPS(x)
+  
+  folder <- paste(city,",",Prov,"_", NAPS, "_", year,"/", sep = "")
+  folder
+  
+}
+
+## 4. Student data ----
+
+  # takes a joinedECCC dataset (see joinECCC) and subsets into multiple .csv
+  # .csv generated in pairs, # of pairs can be specified
+  # save = TRUE created new folder based on joinECCC where new .csv are saved
+  # nsplits is the number of subsets, default is 364
+  # overlap is number of days datasets overlap, default is 144 hrs or 6 days
+  # note that everyone will get a at least 2x '-999' errors
+
+studentData <- function(joinedECCC, dataPairs = 15, save = TRUE, nsplit = 364, overlap=144){
 
   df <- joinedECCC
 
-  # getting metadata from joined eccc
+  # getting metadata from joined eccc for file names
   city <- subsetCity(df)
   year <- subsetYear(df)
   NAPSID <- subsetNAPS(df)
   Prov <- subsetProv(df)
   
+  # creating directory for saving .csvs
+  folder <- folderLocation(df)
+  dir.create(folder)
+  
   # removing unnessary columns 
   df <- df %>% 
     select(-c("City", "Province", "Latitude", "Longitude"))
-  
-  # creating directory for saving .csvs
-  folder <- paste(city,"_",NAPSID,"_",year,"/", sep = "")
-  dir.create(folder)
   
   # generating list of df subsets
   nrows <- NROW(df)
